@@ -14,6 +14,8 @@ import br.edu.iftm.controlegastos.ui.auth.CadastroScreen
 import br.edu.iftm.controlegastos.ui.auth.LoginScreen
 import br.edu.iftm.controlegastos.ui.compra.NovaCompraScreen
 import br.edu.iftm.controlegastos.ui.compra.NovaCompraViewModel
+import br.edu.iftm.controlegastos.ui.extrato.ExtratoScreen
+import br.edu.iftm.controlegastos.ui.extrato.ExtratoViewModel
 import br.edu.iftm.controlegastos.ui.painel.PainelScreen
 import br.edu.iftm.controlegastos.ui.painel.PainelViewModel
 import br.edu.iftm.controlegastos.ui.tetos.TetosScreen
@@ -26,6 +28,7 @@ object Rotas {
     const val PAINEL = "painel"
     const val NOVA_COMPRA = "nova_compra"
     const val TETOS = "tetos"
+    const val EXTRATO = "extrato"
 }
 
 @Composable
@@ -65,6 +68,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
                 emailUsuario = auth.emailAtual,
                 irParaNovaCompra = { navController.navigate(Rotas.NOVA_COMPRA) },
                 irParaTetos = { navController.navigate(Rotas.TETOS) },
+                irParaExtrato = { navController.navigate(Rotas.EXTRATO) },
                 aoSair = {
                     auth.sair()
                     navController.navigate(Rotas.LOGIN) { popUpTo(navController.graph.id) { inclusive = true } }
@@ -76,6 +80,14 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
             val uid = auth.uidAtual ?: return@composable
             NovaCompraScreen(
                 viewModel = viewModel { NovaCompraViewModel(app.gastosRepository, uid) },
+                aoVoltar = { navController.voltar() },
+            )
+        }
+
+        composable(Rotas.EXTRATO) {
+            val uid = auth.uidAtual ?: return@composable
+            ExtratoScreen(
+                viewModel = viewModel { ExtratoViewModel(app.gastosRepository, uid) },
                 aoVoltar = { navController.voltar() },
             )
         }

@@ -34,7 +34,7 @@ O usuário define um **teto de gasto mensal para cada categoria**, lança as com
 | **Lançamento rápido** | Valor, **categoria obrigatória** (Supermercado, Combustível, Farmácia ou Outros), descrição/estabelecimento (ex.: “Posto Petrobras”, “Drogaria Minas”) e forma de pagamento (Pix, Dinheiro, Cartão de Crédito, Cartão de Débito). Data e hora são registradas automaticamente. |
 | **Painel em tempo real** | Uma barra de progresso por categoria com o percentual consumido, quanto falta ou quanto estourou, com alerta de cor. Atualiza sozinha ao lançar ou excluir uma compra. |
 | **Resumo global** | Total gasto no mês corrente, orçamento total (soma dos tetos) e **saldo disponível** antes de atingir o limite. Se o orçamento estourar, mostra o valor excedido. |
-| **Histórico do mês** | Lista das compras do mês, com exclusão após confirmação. |
+| **Extrato do mês** | Tela com todas as compras do mês, total e quantidade, filtro por categoria e exclusão após confirmação. O painel mostra as 3 compras mais recentes e um botão "Ver extrato". |
 | **Validação e persistência** | Os campos numéricos rejeitam valores negativos, zero, letras e mais de 2 casas decimais. Os dados ficam salvos no **Room Database** e separados por usuário. |
 
 ## 2. Tecnologias
@@ -63,12 +63,14 @@ flowchart LR
         T2[PainelScreen]
         T3[NovaCompraScreen]
         T4[TetosScreen]
+        T5[ExtratoScreen]
     end
     subgraph VM["VIEWMODEL"]
         V1[AuthViewModel]
         V2[PainelViewModel]
         V3[NovaCompraViewModel]
         V4[TetosViewModel]
+        V5[ExtratoViewModel]
     end
     subgraph Model["MODEL"]
         R1[AuthRepository]
@@ -80,12 +82,14 @@ flowchart LR
     T2 -- eventos --> V2
     T3 -- eventos --> V3
     T4 -- eventos --> V4
+    T5 -- eventos --> V5
     V1 -. StateFlow .-> T1
     V2 -. StateFlow .-> T2
     V3 -. StateFlow .-> T3
     V4 -. StateFlow .-> T4
+    V5 -. StateFlow .-> T5
     V1 --> R1 --> FB
-    V2 & V3 & V4 --> R2 --> DB
+    V2 & V3 & V4 & V5 --> R2 --> DB
 ```
 
 ### O papel de cada camada
@@ -144,7 +148,8 @@ app/src/main/java/br/edu/iftm/controlegastos/
 │   ├── painel/                 # PainelViewModel + PainelScreen
 │   ├── compra/                 # NovaCompraViewModel + NovaCompraScreen
 │   ├── tetos/                  # TetosViewModel + TetosScreen
-│   ├── componentes/            # Ícones reutilizáveis (Icone, IconeCategoria, BotaoVoltar)
+│   ├── extrato/                # ExtratoViewModel + ExtratoScreen
+│   ├── componentes/            # Peças reutilizáveis: ícones, ItemCompra, diálogo de exclusão
 │   ├── navegacao/              # AppNavHost (rotas)
 │   └── theme/                  # Cores, tema claro/escuro, cores de alerta
 └── util/                       # Regras puras (sem Android), testáveis

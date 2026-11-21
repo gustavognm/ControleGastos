@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,9 +27,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
@@ -38,10 +34,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.edu.iftm.controlegastos.R
-import br.edu.iftm.controlegastos.data.model.Compra
 import br.edu.iftm.controlegastos.ui.componentes.Icone
 import br.edu.iftm.controlegastos.ui.componentes.IconeCategoria
-import br.edu.iftm.controlegastos.ui.theme.VermelhoEstouro
+import br.edu.iftm.controlegastos.ui.componentes.ItemCompra
 import br.edu.iftm.controlegastos.ui.theme.corDoNivel
 import br.edu.iftm.controlegastos.util.ConsumoCategoria
 import br.edu.iftm.controlegastos.util.Formatador
@@ -55,10 +50,10 @@ fun PainelScreen(
     emailUsuario: String?,
     irParaNovaCompra: () -> Unit,
     irParaTetos: () -> Unit,
+    irParaExtrato: () -> Unit,
     aoSair: () -> Unit,
 ) {
     val estado by viewModel.estado.collectAsStateWithLifecycle()
-    var compraParaExcluir by remember { mutableStateOf<Compra?>(null) }
 
     Scaffold(
         topBar = {
@@ -104,8 +99,14 @@ fun PainelScreen(
             items(estado.consumos, key = { it.categoria.name }) { CartaoCategoria(it) }
 
             item {
-                Spacer(Modifier.height(4.dp))
-                Text("Compras do mês", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Row(
+                    Modifier.fillMaxWidth().padding(top = 4.dp),
+                    Arrangement.SpaceBetween,
+                    Alignment.CenterVertically,
+                ) {
+                    Text("Últimas compras", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    TextButton(onClick = irParaExtrato) { Text("Ver extrato") }
+                }
             }
             if (estado.compras.isEmpty()) {
                 item {
@@ -115,24 +116,10 @@ fun PainelScreen(
                     )
                 }
             }
-            items(estado.compras, key = { it.id }) { compra ->
-                ItemCompra(compra, aoExcluir = { compraParaExcluir = compra })
+            items(estado.compras.take(PainelViewModel.QTD_ULTIMAS_COMPRAS), key = { it.id }) { compra ->
+                ItemCompra(compra)
             }
         }
-    }
-
-    compraParaExcluir?.let { compra ->
-        AlertDialog(
-            onDismissRequest = { compraParaExcluir = null },
-            title = { Text("Excluir compra?") },
-            text = { Text("${compra.descricao}: ${Formatador.moeda(compra.valorCentavos)}") },
-            confirmButton = {
-                TextButton(onClick = { viewModel.excluir(compra); compraParaExcluir = null }) {
-                    Text("Excluir", color = VermelhoEstouro)
-                }
-            },
-            dismissButton = { TextButton(onClick = { compraParaExcluir = null }) { Text("Cancelar") } },
-        )
     }
 }
 
@@ -253,27 +240,4 @@ private fun BarraConsumo(fracao: Float, nivel: NivelAlerta) {
         drawStopIndicator = {},
         modifier = Modifier.fillMaxWidth().height(10.dp),
     )
-}
-
-@Composable
-private fun ItemCompra(compra: Compra, aoExcluir: () -> Unit) {
-    Card(Modifier.fillMaxWidth()) {
-        Row(Modifier.padding(start = 16.dp, top = 12.dp, bottom = 12.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconeCategoria(compra.categoria)
-            Column(Modifier.weight(1f).padding(horizontal = 12.dp)) {
-                Text(compra.descricao, fontWeight = FontWeight.SemiBold)
-                Text(
-                    "${compra.formaPagamento.rotulo} • ${Formatador.dataHora(compra.data)}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            Column(horizontalAlignment = Alignment.End) {
-                Text(Formatador.moeda(compra.valorCentavos), fontWeight = FontWeight.Bold)
-                TextButton(onClick = aoExcluir, contentPadding = PaddingValues(horizontal = 8.dp)) {
-                    Text("Excluir", style = MaterialTheme.typography.labelSmall)
-                }
-            }
-        }
-    }
 }

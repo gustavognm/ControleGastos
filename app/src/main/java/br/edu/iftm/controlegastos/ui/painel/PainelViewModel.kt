@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import java.time.YearMonth
 
 data class PainelUiState(
@@ -33,7 +32,7 @@ data class PainelUiState(
 }
 
 class PainelViewModel(
-    private val repositorio: GastosRepository,
+    repositorio: GastosRepository,
     userId: String,
 ) : ViewModel() {
 
@@ -66,7 +65,8 @@ class PainelViewModel(
             initialValue = PainelUiState(),
         )
 
-    fun excluir(compra: Compra) {
-        viewModelScope.launch { repositorio.excluirCompra(compra) }
+    companion object {
+        /** Quantas compras recentes aparecem no painel (a lista completa fica no Extrato). */
+        const val QTD_ULTIMAS_COMPRAS = 3
     }
 }
