@@ -4,6 +4,10 @@ Aplicativo Android, feito em **Kotlin** e **Jetpack Compose**, para controlar os
 
 O usuário define um **teto de gasto mensal para cada categoria**, lança as compras em poucos toques e acompanha, num painel em tempo real, quanto já consumiu de cada teto. As barras mudam de cor conforme o limite se aproxima: **verde → amarelo → vermelho**.
 
+| | |
+|---|---|
+| **Protótipo no Figma** | [Abrir protótipo](https://www.figma.com/design/Tuhjoh6K7zjuwLU0gIZ6yK/Controle-de-Gastos?node-id=37-118) |
+
 ---
 
 ## Sumário
