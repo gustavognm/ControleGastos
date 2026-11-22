@@ -13,15 +13,16 @@ O usuário define um **teto de gasto mensal para cada categoria**, lança as com
 ## Sumário
 
 1. [Funcionalidades](#1-funcionalidades)
-2. [Tecnologias](#2-tecnologias)
-3. [Arquitetura MVVM](#3-arquitetura-mvvm)
-4. [Estrutura de pastas](#4-estrutura-de-pastas)
-5. [Persistência (Room)](#5-persistência-room)
-6. [Regras de validação](#6-regras-de-validação)
-7. [Regras do alerta de cores](#7-regras-do-alerta-de-cores)
-8. [Como executar](#8-como-executar)
-9. [Testes](#9-testes)
-10. [Autor](#10-autor)
+2. [Capturas de tela](#2-capturas-de-tela)
+3. [Tecnologias](#3-tecnologias)
+4. [Arquitetura MVVM](#4-arquitetura-mvvm)
+5. [Estrutura de pastas](#5-estrutura-de-pastas)
+6. [Persistência (Room)](#6-persistência-room)
+7. [Regras de validação](#7-regras-de-validação)
+8. [Regras do alerta de cores](#8-regras-do-alerta-de-cores)
+9. [Como executar](#9-como-executar)
+10. [Testes](#10-testes)
+11. [Autor](#11-autor)
 
 ---
 
@@ -37,7 +38,21 @@ O usuário define um **teto de gasto mensal para cada categoria**, lança as com
 | **Extrato do mês** | Tela com todas as compras do mês, total e quantidade, filtro por categoria e exclusão após confirmação. O painel mostra as 3 compras mais recentes e um botão "Ver extrato". |
 | **Validação e persistência** | Os campos numéricos rejeitam valores negativos, zero, letras e mais de 2 casas decimais. Os dados ficam salvos no **Room Database** e separados por usuário. |
 
-## 2. Tecnologias
+## 2. Capturas de tela
+
+| Login | Cadastro | Painel |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/01-login.jpg" width="220"/> | <img src="docs/screenshots/02-cadastro.jpg" width="220"/> | <img src="docs/screenshots/03-painel.jpg" width="220"/> |
+
+| Nova compra | Erro de validação | Tetos mensais |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/04-nova-compra.jpg" width="220"/> | <img src="docs/screenshots/05-validacao.jpg" width="220"/> | <img src="docs/screenshots/06-tetos.jpg" width="220"/> |
+
+| Extrato do mês |
+|:---:|
+| <img src="docs/screenshots/07-extrato.jpg" width="220"/> |
+
+## 3. Tecnologias
 
 | Área | Tecnologia |
 |---|---|
@@ -52,7 +67,7 @@ O usuário define um **teto de gasto mensal para cada categoria**, lança as com
 | Testes | JUnit 4 |
 | Requisitos | Android 8.0 (API 26) ou superior |
 
-## 3. Arquitetura MVVM
+## 4. Arquitetura MVVM
 
 O app é dividido em três camadas. Cada camada só conversa com a camada vizinha.
 
@@ -133,7 +148,7 @@ viewModel { PainelViewModel(app.gastosRepository, uid) }
 
 Com isso, os ViewModels não dependem do Android nem do Firebase diretamente e podem ser testados isoladamente.
 
-## 4. Estrutura de pastas
+## 5. Estrutura de pastas
 
 ```
 app/src/main/java/br/edu/iftm/controlegastos/
@@ -172,7 +187,7 @@ Os ícones do app são arquivos **SVG**, guardados em [`docs/icones/`](docs/icon
 
 Os desenhos vêm do Material Icons, do Google (licença Apache 2.0).
 
-## 5. Persistência (Room)
+## 6. Persistência (Room)
 
 ```mermaid
 erDiagram
@@ -200,7 +215,7 @@ Decisões tomadas:
 - **Índice em `(userId, data)`**: deixa rápida a busca das compras do mês.
 - **Mês corrente**: o repositório calcula o primeiro e o último milissegundo do mês com `YearMonth`. Assim, o painel “zera” sozinho na virada do mês, e o histórico antigo continua salvo.
 
-## 6. Regras de validação
+## 7. Regras de validação
 
 **Valor da compra e tetos** (`ValidadorValor`, coberto por 16 testes):
 
@@ -220,7 +235,7 @@ A proteção acontece em duas etapas:
 
 **Outros campos:** a categoria e a forma de pagamento são obrigatórias. A descrição não pode ficar em branco (máx. 60 caracteres). O e-mail precisa ter formato válido. A senha precisa de pelo menos 6 caracteres, e a confirmação precisa ser igual à senha.
 
-## 7. Regras do alerta de cores
+## 8. Regras do alerta de cores
 
 | Consumo do teto | Cor | Mensagem |
 |---|---|---|
@@ -231,7 +246,7 @@ A proteção acontece em duas etapas:
 
 A mesma regra vale para a barra do resumo global (total gasto × soma dos tetos).
 
-## 8. Como executar
+## 9. Como executar
 
 ### Pré-requisitos
 - Android Studio (versão recente) com o Android SDK 37
@@ -252,7 +267,7 @@ A mesma regra vale para a barra do resumo global (total gasto × soma dos tetos)
 
 > Sem o `google-services.json` verdadeiro o app compila e abre, mas o login e o cadastro mostram erro, porque o arquivo de exemplo não aponta para nenhum projeto real.
 
-## 9. Testes
+## 10. Testes
 
 Os testes de unidade cobrem as regras de negócio que não dependem do Android: validação de valores, validação de e-mail e senha, e o cálculo do nível de alerta.
 
@@ -262,6 +277,6 @@ Os testes de unidade cobrem as regras de negócio que não dependem do Android: 
 
 Resultado: **25 testes, 0 falhas** (`ValidadorValorTest` e `ConsumoTest`).
 
-## 10. Autor
+## 11. Autor
 
 **Gustavo Nunes Melo**, IFTM Campus Patrocínio · Programação para Dispositivos Móveis
