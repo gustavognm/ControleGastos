@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "000000000000",
-    "project_id": "substitua-pelo-seu-projeto",
-    "storage_bucket": "substitua-pelo-seu-projeto.appspot.com"
+    "project_number": "614544477419",
+    "project_id": "controle-de-gastos-e5a73",
+    "storage_bucket": "controle-de-gastos-e5a73.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
+        "mobilesdk_app_id": "1:614544477419:android:f500cffb3f5f70718f82ae",
         "android_client_info": {
           "package_name": "br.edu.iftm.controlegastos"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "SUBSTITUA_PELO_ARQUIVO_REAL_DO_FIREBASE"
+          "current_key": "AIzaSyD_zWBHlolNuqRkvvwXLhLDB186R6eMkXk"
         }
       ],
       "services": {
