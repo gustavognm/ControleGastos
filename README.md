@@ -7,6 +7,7 @@ O usuário define um **teto de gasto mensal para cada categoria**, lança as com
 | | |
 |---|---|
 | **Protótipo no Figma** | [Abrir protótipo](https://www.figma.com/design/Tuhjoh6K7zjuwLU0gIZ6yK/Controle-de-Gastos?node-id=37-118) |
+| **Vídeo demonstrativo** | [Assistir no YouTube](https://youtu.be/gWPFr4O_V0E) |
 
 ---
 
